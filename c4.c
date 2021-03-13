@@ -1,4 +1,4 @@
- /* 
+  /* 
   * Connect Four - Reference Implementation
   * Driver Program
   * Aaron Sutton
@@ -27,7 +27,23 @@ int main(int argc, char* argv[]) {
   };
 
   render(B_WIDTH, B_LENGTH, board);
-  int c = get_input(B_WIDTH);
+  
+  int player = 1;
+  while (true) {
+
+    int c = get_input(B_WIDTH);
+    int r = drop_token(B_WIDTH, B_LENGTH, board, c);
+    board[r][c] = player == 1 ? VALUE_PLAYER_1 : VALUE_PLAYER_2;
+
+    render(B_WIDTH, B_LENGTH, board);
+
+    if (winning_pattern(B_WIDTH, B_LENGTH, board, r, c)) {
+      printf("Player %d wins!\n", player);
+      break;
+    }
+
+    player = player == 1 ? 2 : 1;
+  }
 
   return 0;
 }

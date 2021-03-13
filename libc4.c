@@ -55,6 +55,78 @@ int get_input(size_t cols) {
   return n;
 }
 
-void drop_token(int col) {
-
+int drop_token(size_t rows, size_t cols, int b[rows][cols], int col) {
+  for (int i = rows - 1; i >= 0; i--) {
+    if (b[i][col] == 0) {
+      return i;
+    }
+  }
+  return -1;
 }
+
+bool winning_pattern(size_t rows, size_t cols, int b[rows][cols], int row, int col) {
+  int winning_value = b[row][col];
+
+  // Horizontal pattern
+  int s = 1;
+  int curr_col = col;
+
+  // track right and find as many winning tokens as possible.
+  while ((curr_col >= 0 && curr_col < cols) && b[row][curr_col + 1] == winning_value) {
+    curr_col++;
+    s++;
+  }
+
+  // Track left and find as many winning tokens as possible.
+  while ((curr_col >= 0 && curr_col < cols) && b[row][curr_col - 1] == winning_value) {
+    curr_col--;
+    s++;
+  }
+
+  if (s >= 4) { return true; } else
+   
+  // Vertical pattern
+  s = 1;
+  int curr_row = row;
+
+  // Track down and find as many winning tokens as possible.
+  // There is no case where tracking up should be needed, since the token is
+  // always at the top.
+  while ((curr_row >= 0 && curr_row < rows) && b[curr_row + 1][col] == winning_value) {
+    curr_row++;
+    s++;
+  }
+
+  if (s >= 4) { return true; }
+  
+  // Diagonal pattern
+  s = 1;
+  curr_row = row;
+  curr_col = col;
+
+  // Track SE
+  // r+ c+
+  while ((curr_row < rows) && (curr_col < cols) && b[curr_row + 1][curr_col + 1]) {
+    curr_row++;
+    curr_col++;
+    s++;
+  }
+
+  s = 1;
+  
+  // r+ c- 
+  while ((curr_row < rows) && (curr_col >= 0) && b[curr_row + 1][curr_col - 1]) {
+    curr_row++;
+    curr_col--;
+    s++;
+  }
+
+  // Track NW
+  
+  // Track SE
+  
+  // Track SW
+
+  if (s >= 4) { return true; } else { return false; }
+}
+
