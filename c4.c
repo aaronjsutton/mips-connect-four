@@ -30,8 +30,8 @@ int main(int argc, char* argv[]) {
   
   int player = 1;
   while (true) {
-
-    int c = get_input(B_WIDTH);
+    
+    int c = get_input(B_WIDTH, player);
     int r = drop_token(B_WIDTH, B_LENGTH, board, c);
     board[r][c] = player == 1 ? VALUE_PLAYER_1 : VALUE_PLAYER_2;
 

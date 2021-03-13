@@ -48,9 +48,9 @@ void render(size_t rows, size_t cols, int b[rows][cols]) {
 }
 
 // Prompt for input and return selected col.
-int get_input(size_t cols) {
+int get_input(size_t cols, int player) {
   int n;
-  printf("\nEnter column [0-%zu] -> ", cols);
+  printf("\n[%c] Enter column [0-%zu] -> ", token_char(player), cols);
   scanf("%d", &n);
   return n;
 }
@@ -105,27 +105,39 @@ bool winning_pattern(size_t rows, size_t cols, int b[rows][cols], int row, int c
   curr_col = col;
 
   // Track SE
-  // r+ c+
-  while ((curr_row < rows) && (curr_col < cols) && b[curr_row + 1][curr_col + 1]) {
-    curr_row++;
+  // r- c+
+  while ((curr_row >= 0) && (curr_col < cols) && b[curr_row - 1][curr_col + 1] == winning_value) {
+    curr_row--;
     curr_col++;
     s++;
   }
-
-  s = 1;
   
   // r+ c- 
-  while ((curr_row < rows) && (curr_col >= 0) && b[curr_row + 1][curr_col - 1]) {
+  while ((curr_row < rows) && (curr_col >= 0) && b[curr_row + 1][curr_col - 1] == winning_value) {
     curr_row++;
     curr_col--;
     s++;
   }
 
-  // Track NW
+  if (s >= 4) { return true; }
   
-  // Track SE
+  s = 1;
+  curr_row = row;
+  curr_col = col;
   
-  // Track SW
+  // r+ c+
+  while ((curr_row < rows) && (curr_col < cols) && b[curr_row + 1][curr_col + 1] == winning_value) {
+    curr_row--;
+    curr_col--;
+    s++;
+  }
+  
+  // r- c- 
+  while ((curr_row >= 0) && (curr_col >= 0) && b[curr_row - 1][curr_col - 1] == winning_value) {
+    curr_row--;
+    curr_col--;
+    s++;
+  }
 
   if (s >= 4) { return true; } else { return false; }
 }
